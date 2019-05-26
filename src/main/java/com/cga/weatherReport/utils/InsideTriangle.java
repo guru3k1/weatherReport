@@ -1,7 +1,10 @@
 package com.cga.weatherReport.utils;
 
+import org.springframework.stereotype.Component;
+
 import com.cga.weatherReport.model.Coordinates;
 
+@Component
 public class InsideTriangle {
 	public boolean isInside(Coordinates p1, Coordinates p2, Coordinates p3, Coordinates sun) {
 		double p1p2p3 = findOrientation(p1,p2,p3);

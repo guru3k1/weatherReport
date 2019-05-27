@@ -1,5 +1,6 @@
 package com.cga.weatherReport.model;
 
+
 public class Planet {
 	private int radius;
 	private int angularSpeed;

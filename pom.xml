@@ -41,14 +41,18 @@
 			    <groupId>com.google.cloud.tools</groupId>
 			    <artifactId>appengine-maven-plugin</artifactId>
 			    <version>2.0.0</version>
-				<executions>
+			    <configuration>
+    				<deploy.projectId>GCLOUD_CONFIG</deploy.projectId>
+    				<deploy.version>GCLOUD_CONFIG</deploy.version>
+  				</configuration>
+				<!-- <executions>
 			    	<execution>
 			      		<phase>prepare-package</phase>
 			      		<goals>
 			        		<goal>genRepoInfoFile</goal>
 			      		</goals>
 			    	</execution>
-			  	</executions>
+			  	</executions> -->
 			</plugin>
 		</plugins>
 	</build>

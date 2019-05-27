@@ -13,9 +13,14 @@ public class WeatherReportApplication {
 		SpringApplication.run(WeatherReportApplication.class, args);
 	}
 
+	@RequestMapping(value="/")
+	public String homeMesagge() {
+		return "Thanks to acces our service.";
+	}
+	
 	@RequestMapping(value="/clima")
 	public String firstApp() {
-		return "Working on Geting data from database";
+		return "Working on Geting data from database.";
 	}
 	
 }

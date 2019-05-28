@@ -41,7 +41,7 @@ public class WeatherReportApplication {
 		return "Working on Geting data from database.";
 	}
 	
-	@GetMapping(value="/Coordenadas/dia/{dia}")
+	@RequestMapping(value="/coordenadas/{dia}")
 	@ResponseBody
 	public ResponseEntity<HashMap<String,Coordinates>> getCoordenates(@PathVariable int dia) {
 		HashMap<String,Coordinates> planets = new HashMap<>();

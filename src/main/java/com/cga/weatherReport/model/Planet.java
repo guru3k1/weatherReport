@@ -1,5 +1,7 @@
 package com.cga.weatherReport.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Planet {
 	private int radius;
@@ -11,11 +13,11 @@ public class Planet {
 	}
 	
 	public double getY (int day) {
-		return this.radius * Math.sin(Math.toRadians(this.angularSpeed) * day* this.direction);
+		return new BigDecimal(this.radius * Math.sin(Math.toRadians(this.angularSpeed*day*direction))).setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 	
 	public double getX (int day) {
-		return this.radius * Math.cos(Math.toRadians(this.angularSpeed) * day* this.direction);
+		return new BigDecimal(this.radius * Math.cos(Math.toRadians(this.angularSpeed*day*direction))).setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 	
 	public Planet(int radius, int angularSpeed, int direction) {

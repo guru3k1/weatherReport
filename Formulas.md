@@ -1,4 +1,7 @@
-# Calcular la posicion en X,Y
+# Formulas
+[Volver](README.md)
+
+**Calcular la posicion en X,Y**
 
 La posicion en X la obtenemos multiplicando el Radio (Distancia del planeta al sol) por el coseno de la velocidad angular en radianes por tiempo. Ej:
 
@@ -16,7 +19,7 @@ t = tiempo
 
 pos y = r * seno( w * t)
 
-# Calcular si el sol se encuentra dentro del triangulo formado por los tres planetas
+**Calcular si el sol se encuentra dentro del triangulo formado por los tres planetas**
 
 Dados 3 puntos (A,B,C) crearemos un triangulo y debemos saber si un punto P se encuentra dentro del mismo triangulo.
 El calculo se hara formando triangulos con 2 de los puntos del triangulo original y el punto a identificar dentro del mismo triangulo.

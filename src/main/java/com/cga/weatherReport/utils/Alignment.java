@@ -8,7 +8,16 @@ import com.cga.weatherReport.model.Coordinates;
 public class Alignment {
 	
 	public boolean areAligned(Coordinates p1, Coordinates p2, Coordinates p3) {
-		return 	(p3.getY()-p1.getY()) == getSlope(p1, p2)*(p3.getX()-p1.getX());
+		boolean perfectMatch = (p3.getY()-p1.getY()) == getSlope(p1, p2)*(p3.getX()-p1.getX());
+		boolean adjustedMatch = (p3.getY()-p1.getY()) - getSlope(p1, p2)*(p3.getX()-p1.getX()) < 1;
+		if(adjustedMatch) {
+			System.out.println("Macheado ajustado");
+		}
+		if(perfectMatch == true || adjustedMatch == true) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public boolean areAlignedWithSun(Coordinates p1, Coordinates p2) {

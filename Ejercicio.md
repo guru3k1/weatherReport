@@ -1,11 +1,13 @@
-#Ejercicio MeLi
+# Ejercicio MeLi
+[Volver](Readme.md)
 
-#Historia
+**Historia**
+
 En una galaxia lejana, existen tres civilizaciones. Vulcanos, Ferengis y Betasoides. Cada civilización vive en paz en su respectivo planeta.
 Dominan la predicción del clima mediante un complejo sistema informático.
 A continuación el diagrama del sistema solar.
 
-*Premisas:*
+**Premisas:**
 
 ● El planeta Ferengi se desplaza con una velocidad angular de 1 grados/día en sentido horario. Su distancia con respecto al sol es de 500Km. 
 
@@ -15,7 +17,7 @@ A continuación el diagrama del sistema solar.
 
 ● Todas las órbitas son circulares.
 
-#Condiciones climáticas a evaluar.
+**Condiciones climáticas a evaluar.**
 
 Cuando los tres planetas están alineados entre sí y a su vez alineados con respecto al sol, el sistema solar experimenta un período de **sequía**.
             
@@ -24,7 +26,7 @@ Cuando los tres planetas no están alineados, forman entre sí un tri
 Las **condiciones óptimas de presión y temperatura** se dan cuando los tres planetas están alineados entre sí pero no están alineados con el sol.
 
 
-#Requerimientos
+**Requerimientos**
 
 Realizar un programa informático para poder predecir en los próximos 10 años:
 1. ¿Cuántos períodos de sequía habrá? 

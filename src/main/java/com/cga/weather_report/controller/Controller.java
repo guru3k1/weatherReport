@@ -86,7 +86,6 @@ public class Controller {
 	}
 	
 	@GetMapping(value="/{planeta}/alineacion", produces = "application/json")
-	@ResponseBody
 	public ResponseEntity<?> getAlignment(@PathVariable("planeta") String planet,@RequestParam(value="dia", required=true) Integer day) {
 		logger.debug("Inside controller getAlignment method");
 		
@@ -96,10 +95,10 @@ public class Controller {
 		}
 		
 		if(day == null) {
-			new ResponseEntity<CustomErrorHandler>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
 		}
 		if(day < 0 ) {
-			new ResponseEntity<CustomErrorHandler>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
 		}
 
 		boolean alignmentResponse = service.getAlignment(day, rightPlanet);

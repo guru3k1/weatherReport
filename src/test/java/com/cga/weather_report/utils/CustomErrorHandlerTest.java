@@ -7,9 +7,9 @@ import org.junit.Test;
 public class CustomErrorHandlerTest {
 
 	private CustomErrorHandler ceh;
-	
+
 	@Test
-	public void testConstructor() {
+	public void testClass() {
 		ceh = new CustomErrorHandler("Test ERROR");
 		assertEquals("Test ERROR", ceh.getErrorMessage());
 		ceh.setErrorMessage("Test ERROR Set");

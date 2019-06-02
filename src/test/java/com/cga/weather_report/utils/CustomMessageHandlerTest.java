@@ -9,7 +9,7 @@ public class CustomMessageHandlerTest {
 	private CustomMessageHandler cmh;
 	
 	@Test
-	public void testConstructor() {
+	public void testClass() {
 		cmh = new CustomMessageHandler("Test");
 		assertEquals("Test", cmh.getMessage());
 		cmh.setMessage("Test Set");

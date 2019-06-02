@@ -11,8 +11,10 @@ public class InsideTriangle {
 		double p1p2sun = findOrientation(p1,p2,sun);
 		double p2p3sun = findOrientation(p2, p3, sun);
 		double p3p1sun = findOrientation(p3,p1,sun);
-		
-		return isPositive(p1p2sun)==isPositive(p1p2p3) && isPositive(p2p3sun)==isPositive(p1p2p3) && isPositive(p3p1sun)==isPositive(p1p2p3);
+		boolean firstComp = isPositive(p1p2sun)==isPositive(p1p2p3);
+		boolean secondComp = isPositive(p2p3sun)==isPositive(p1p2p3);
+		boolean thirdComp = isPositive(p3p1sun)==isPositive(p1p2p3);
+		return firstComp && secondComp && thirdComp;
 	}
 	
 	public double findOrientation(Coordinates p1, Coordinates p2, Coordinates p3) {

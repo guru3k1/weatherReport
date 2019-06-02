@@ -1,4 +1,4 @@
-package com.cga.weatherReport;
+package com.cga.weather_report;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

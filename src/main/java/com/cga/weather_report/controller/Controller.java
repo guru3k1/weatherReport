@@ -2,6 +2,8 @@ package com.cga.weather_report.controller;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cga.weather_report.model.Coordinates;
 import com.cga.weather_report.service.Service;
 import com.cga.weather_report.utils.CustomErrorHandler;
+import com.cga.weather_report.utils.CustomMessageHandler;
 
 @RestController
 public class Controller {
@@ -25,6 +28,7 @@ public class Controller {
 	private static final String INVALID_PLANET = "El planeta no es valido";
 	private static final String DAY_REQUIRED = "El dia es requerido";
 	private static final String HIGHER_THAN_ZERO = "El dia debe ser 0 o superior";
+	private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 	
 	
 	@Autowired
@@ -48,14 +52,8 @@ public class Controller {
 
 	@GetMapping(value = "/{planeta}/clima", produces = "application/json")
 	public ResponseEntity<?> getWeatherByDay(@PathVariable("planeta") String planet, @RequestParam(value="dia", required=true) Integer day) {
-		String rightPlanet= null;
-		switch(planet) {
-		case FERENGI:
-		case BETASOIDE:
-		case VULCANO:
-			rightPlanet = planet;
-			break;
-		default:
+		String rightPlanet= validatePlanet(planet);
+		if(rightPlanet == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
 		}
 		
@@ -67,19 +65,13 @@ public class Controller {
 		}
 		
 		String weather = service.getWeatherReportByDay(day,rightPlanet);
-		return new ResponseEntity<>(weather, HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessageHandler(weather), HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{planeta}/coordenadas", produces = "application/json")
 	public ResponseEntity<?> getCoordenates(@PathVariable("planeta") String planet,@RequestParam(value="dia", required=true) Integer day) {
-		String rightPlanet= null;
-		switch(planet) {
-		case FERENGI:
-		case BETASOIDE:
-		case VULCANO:
-			rightPlanet = planet;
-			break;
-		default:
+		String rightPlanet= validatePlanet(planet);
+		if(rightPlanet == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
 		}
 		
@@ -96,14 +88,10 @@ public class Controller {
 	@GetMapping(value="/{planeta}/alineacion", produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<?> getAlignment(@PathVariable("planeta") String planet,@RequestParam(value="dia", required=true) Integer day) {
-		String rightPlanet= null;
-		switch(planet) {
-		case FERENGI:
-		case BETASOIDE:
-		case VULCANO:
-			rightPlanet = planet;
-			break;
-		default:
+		logger.debug("Inside controller getAlignment method");
+		
+		String rightPlanet= validatePlanet(planet);
+		if(rightPlanet == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
 		}
 		
@@ -116,12 +104,24 @@ public class Controller {
 
 		boolean alignmentResponse = service.getAlignment(day, rightPlanet);
 		String response = "";
+		logger.debug("Aligment method response: {}", alignmentResponse);
 		if(alignmentResponse) {
-			response = "Para los habitantes del planeta "+planet+" en el dia "+day+" los planetas no estan alineados";
-		} else {
 			response = "Para los habitantes del planeta "+planet+" en el dia "+day+" los planetas estan alineados";
+		} else {
+			response = "Para los habitantes del planeta "+planet+" en el dia "+day+" los planetas no estan alineados";
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessageHandler(response), HttpStatus.OK);
 	}
 	
+	public String validatePlanet(String planet) {
+		switch(planet) {
+		case FERENGI:
+		case BETASOIDE:
+		case VULCANO:
+			return planet;
+		default:
+			planet = null;
+	}
+		return planet;
+	}
 }

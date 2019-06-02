@@ -1,23 +1,24 @@
-package com.cga.weatherReport.model;
+package com.cga.weather_report.model;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+
+import javax.validation.constraints.Min;
 
 public class Planet {
 	private int radius;
 	private int angularSpeed;
 	private int direction;
 	
-	public Coordinates getCoordinates(int day) {
+	public Coordinates getCoordinates(@Min(0) int day) {
 		return new Coordinates(getX(day),getY(day));
 	}
 	
 	public double getY (int day) {
-		return new BigDecimal(this.radius * Math.sin(Math.toRadians(this.angularSpeed*day*direction))).doubleValue();
+		return BigDecimal.valueOf(this.radius * Math.sin(Math.toRadians(this.angularSpeed*day*direction))).doubleValue();
 	}
 	
 	public double getX (int day) {
-		return new BigDecimal(this.radius * Math.cos(Math.toRadians(this.angularSpeed*day*direction))).doubleValue();
+		return BigDecimal.valueOf(this.radius * Math.cos(Math.toRadians(this.angularSpeed*day*direction))).doubleValue();
 	}
 	
 	public Planet(int radius, int angularSpeed, int direction) {

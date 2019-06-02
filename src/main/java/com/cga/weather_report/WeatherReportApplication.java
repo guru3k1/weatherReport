@@ -1,4 +1,4 @@
-package com.cga.weatherReport;
+package com.cga.weather_report;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cga</groupId>
-	<artifactId>weatherReport</artifactId>
+	<artifactId>weather_report</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>weatherReport</name>
 	<description>Galactic weather prediction system</description>

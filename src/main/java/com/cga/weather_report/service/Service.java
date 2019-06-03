@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.cga.weather_report.model.Coordinates;
 
 public interface Service {
+	String calculateWeatherByDayAndPlanet(int day, String planet);
 	
 	String getWeatherReportByDay(int day, String planet);
 	
@@ -12,6 +13,7 @@ public interface Service {
 	
 	boolean getAlignment(int day, String planet);
 	
-	String getWeatherReportByWeatherType(String weather, String planet);
+	int validatePlanet(String planet);
 	
+	HashMap<String, String> getReport(String planet);
 }

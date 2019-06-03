@@ -112,6 +112,16 @@ public class Controller {
 		return new ResponseEntity<>(new CustomMessageHandler(response), HttpStatus.OK);
 	}
 	
+	@GetMapping(value="/{planeta}/informe/", produces = "application/json")
+	public ResponseEntity<?> getReport(@PathVariable("planeta") String planet) {
+		String rightPlanet= validatePlanet(planet);
+		if(rightPlanet == null) {
+			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
+		}
+		HashMap<String, String> report = service.getReport(rightPlanet);
+		return new ResponseEntity<>(report,HttpStatus.OK);
+	}
+	
 	public String validatePlanet(String planet) {
 		switch(planet) {
 		case FERENGI:

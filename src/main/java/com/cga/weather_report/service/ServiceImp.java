@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cga.weather_report.dao.Dao;
 import com.cga.weather_report.model.Coordinates;
 import com.cga.weather_report.model.Planet;
 import com.cga.weather_report.utils.Alignment;
@@ -14,11 +15,16 @@ import com.cga.weather_report.utils.InsideTriangle;
 
 @Component
 public class ServiceImp implements Service {
+	
 	@Autowired
 	private Alignment planetsAlignment;
 	
 	@Autowired
 	private InsideTriangle insideTriangle;
+	
+	@Autowired
+	private Dao dao;
+	
 	private static final String OPTIMAL_CONDITIONS_OF_PRESSURE_AND_TEMPERATURE = "Optimal conditions of pressure and temperature";
 	private static final int CLOCKWISE = -1;
 	private static final int COUNTER_CLOCKWISE = 1;
@@ -32,8 +38,7 @@ public class ServiceImp implements Service {
 	Planet vulcano = new Planet(1000, 5, COUNTER_CLOCKWISE);
 	Planet sunStar = new Planet(0, 0, 0);
 	
-	@Override
-	public String getWeatherReportByDay(int day, String planet) {
+	public String calculateWeatherByDayAndPlanet(int day, String planet) {
 		int planetValue = validatePlanet(planet);
 
 		String weather = "Normal";
@@ -48,6 +53,12 @@ public class ServiceImp implements Service {
 			weather = "Rainy";
 		}
 		return weather;
+	}
+	
+	
+	@Override
+	public String getWeatherReportByDay(int day, String planet) {
+		return dao.getWeatherByDayAndPlanet(day, planet);
 	}
 
 	@Override
@@ -69,12 +80,12 @@ public class ServiceImp implements Service {
 		return planetsAlignment.areAligned(ferengi.getCoordinates(day,planetValue), betasoide.getCoordinates(day,planetValue), vulcano.getCoordinates(day,planetValue));
 	}
 
-	@Override
-	public String getWeatherReportByWeatherType(String weather, String planet) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+	@Override
+	public HashMap<String, String> getReport(String planet) {
+		return dao.getWeatherReportByPlanet(planet);
+	}
+	
 	public int validatePlanet(String planet) {
 		int planetValue=0;
 		switch(planet) {
@@ -93,5 +104,6 @@ public class ServiceImp implements Service {
 		
 		return planetValue;
 	}
+
 	
 }

@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS ferengis;
+DROP TABLE IF EXISTS betasoides;
+DROP TABLE IF EXISTS vulcanos;
+
+CREATE TABLE ferengis (
+	dia int AUTO_INCREMENT PRIMARY KEY,
+	clima VARCHAR(100) NOT NULL,
+);
+
+CREATE TABLE betasoides (
+	dia int AUTO_INCREMENT PRIMARY KEY,
+	clima VARCHAR(100) NOT NULL,
+);
+
+CREATE TABLE vulcanos (
+	dia int AUTO_INCREMENT PRIMARY KEY,
+	clima VARCHAR(100) NOT NULL,
+);
+

@@ -3,8 +3,6 @@ package com.cga.weather_report.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,14 +14,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 
+import com.cga.weather_report.model.Clima;
 import com.cga.weather_report.model.Coordinates;
 import com.cga.weather_report.service.Service;
 
@@ -59,7 +58,7 @@ public class ControllerTest {
 	
 	@Test
 	public void wrongValueTest () throws Exception {
-		String uri = "/Ferengi/clima?dia=a";
+		String uri = "clima?dia=a";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isBadRequest())
@@ -68,7 +67,7 @@ public class ControllerTest {
 	
 	@Test
 	public void badKeyTest () throws Exception {
-		String uri = "/Ferengi/clima?d";
+		String uri = "clima?d";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isBadRequest())
@@ -76,41 +75,20 @@ public class ControllerTest {
 	}
 	
 	@Test
-	public void invalidWolrdTest () throws Exception {
-		String uri = "/ferengi/clima?dia=0";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isConflict())
-			      .andExpect(content().json("{'errorMessage':'El planeta no es valido'}"));
-		
-		uri = "/ferengi/coordenadas?dia=0";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isConflict())
-			      .andExpect(content().json("{'errorMessage':'El planeta no es valido'}"));
-		
-		uri = "/ferengi/alineacion?dia=0";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isConflict())
-			      .andExpect(content().json("{'errorMessage':'El planeta no es valido'}"));
-	}
-	
-	@Test
 	public void nullDayTest () throws Exception {
-		String uri = "/Ferengi/clima?dia=";
+		String uri = "clima?dia=";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isConflict())
 			      .andExpect(content().json("{'errorMessage':'El dia es requerido'}"));
 		
-		uri = "/Ferengi/coordenadas?dia=";
+		uri = "coordenadas?dia=";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isConflict())
 			      .andExpect(content().json("{'errorMessage':'El dia es requerido'}"));
 		
-		uri = "/Ferengi/alineacion?dia=";
+		uri = "alineacion?dia=";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isConflict())
@@ -119,19 +97,19 @@ public class ControllerTest {
 	
 	@Test
 	public void lowerThanZeroDayTest () throws Exception {
-		String uri = "/Ferengi/clima?dia=-1";
+		String uri = "clima?dia=-1";
 		mvc.perform(get(uri)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
 		.andExpect(content().json("{'errorMessage':'El dia debe ser 0 o superior'}"));
 		
-		uri = "/Ferengi/coordenadas?dia=-1";
+		uri = "coordenadas?dia=-1";
 		mvc.perform(get(uri)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
 		.andExpect(content().json("{'errorMessage':'El dia debe ser 0 o superior'}"));
 		
-		uri = "/Ferengi/alineacion?dia=-1";
+		uri = "alineacion?dia=-1";
 		mvc.perform(get(uri)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
@@ -142,7 +120,7 @@ public class ControllerTest {
 	
 	@Test
 	public void validWeatherTest () throws Exception {
-		String uri = "/Ferengi/clima?dia=0";
+		String uri = "/clima?dia=0";
 		
 		
 		mvc.perform(get(uri)
@@ -153,7 +131,7 @@ public class ControllerTest {
 	
 	@Test
 	public void validCoordenatesTest () throws Exception {
-		String uri = "/Ferengi/coordenadas?dia=0";
+		String uri = "/coordenadas?dia=0";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
@@ -166,7 +144,7 @@ public class ControllerTest {
 	
 	@Test
 	public void alignmentTrueTest () throws Exception {
-		String uri = "/Ferengi/alineacion?dia=0";
+		String uri = "/alineacion?dia=0";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
@@ -175,7 +153,7 @@ public class ControllerTest {
 	
 	@Test
 	public void alignmentFalseTest () throws Exception {
-		String uri = "/Ferengi/alineacion?dia=1";
+		String uri = "/alineacion?dia=1";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
@@ -190,13 +168,13 @@ public class ControllerTest {
 		coordinatesMap.put("Vulcano", new Coordinates(2000,0));
 		coordinatesMap.put("Sol", new Coordinates(0,0));
 		
-		when(serviceMock.getWeatherReportByDay(0, "Ferengi"))
-		.thenReturn("Drought period");
-		when(serviceMock.getCoordenates(0,"Ferengi"))
+		when(serviceMock.getWeatherReportByDay(Long.valueOf(0)))
+		.thenReturn(new Optional<Clima>());
+		when(serviceMock.getCoordenates(Long.valueOf(0))
 		.thenReturn(coordinatesMap);
-		when(serviceMock.getAlignment(0, "Ferengi"))
+		when(serviceMock.getAlignment(Long.valueOf(0)))
 		.thenReturn(true);
-		when(serviceMock.getAlignment(1, "Ferengi"))
+		when(serviceMock.getAlignment(Long.valueOf(1)))
 		.thenReturn(false);
 	}
 	

@@ -1,6 +1,7 @@
 package com.cga.weather_report.controller;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cga.weather_report.model.Clima;
 import com.cga.weather_report.model.Coordinates;
 import com.cga.weather_report.service.Service;
 import com.cga.weather_report.utils.CustomErrorHandler;
@@ -25,7 +26,6 @@ public class Controller {
 	private static final String FERENGI = "Ferengi";
 	private static final String BETASOIDE = "Betasoide";
 	private static final String VULCANO = "Vulcano";
-	private static final String INVALID_PLANET = "El planeta no es valido";
 	private static final String DAY_REQUIRED = "El dia es requerido";
 	private static final String HIGHER_THAN_ZERO = "El dia debe ser 0 o superior";
 	private static final Logger logger = LoggerFactory.getLogger(Controller.class);
@@ -50,12 +50,8 @@ public class Controller {
 	}
 
 
-	@GetMapping(value = "/{planeta}/clima", produces = "application/json")
-	public ResponseEntity<?> getWeatherByDay(@PathVariable("planeta") String planet, @RequestParam(value="dia", required=true) Integer day) {
-		String rightPlanet= validatePlanet(planet);
-		if(rightPlanet == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
-		}
+	@GetMapping(value = "/clima", produces = "application/json")
+	public ResponseEntity<?> getWeatherByDay(@RequestParam(value="dia", required=true) Long day) {
 		
 		if(day == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
@@ -64,16 +60,16 @@ public class Controller {
 			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
 		}
 		
-		String weather = service.getWeatherReportByDay(day,rightPlanet);
-		return new ResponseEntity<>(new CustomMessageHandler(weather), HttpStatus.OK);
+		Clima weather = service.getWeatherReportByDay(day);
+		if(weather == null) {
+			return new ResponseEntity<>(new CustomErrorHandler("NULL"), HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(new CustomMessageHandler(weather.getClima()), HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/{planeta}/coordenadas", produces = "application/json")
-	public ResponseEntity<?> getCoordenates(@PathVariable("planeta") String planet,@RequestParam(value="dia", required=true) Integer day) {
-		String rightPlanet= validatePlanet(planet);
-		if(rightPlanet == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
-		}
+	@GetMapping(value="/coordenadas", produces = "application/json")
+	public ResponseEntity<?> getCoordenates(@RequestParam(value="dia", required=true) Long day) {
+
 		
 		if(day == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
@@ -81,18 +77,13 @@ public class Controller {
 		if(day < 0 ) {
 			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
 		}
-		HashMap<String,Coordinates> planets = service.getCoordenates(day, rightPlanet);
+		HashMap<String,Coordinates> planets = service.getCoordenates(day);
 		return new ResponseEntity<>(planets, HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/{planeta}/alineacion", produces = "application/json")
-	public ResponseEntity<?> getAlignment(@PathVariable("planeta") String planet,@RequestParam(value="dia", required=true) Integer day) {
+	@GetMapping(value="/alineacion", produces = "application/json")
+	public ResponseEntity<?> getAlignment(@RequestParam(value="dia", required=true) Long day) {
 		logger.debug("Inside controller getAlignment method");
-		
-		String rightPlanet= validatePlanet(planet);
-		if(rightPlanet == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
-		}
 		
 		if(day == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
@@ -101,24 +92,20 @@ public class Controller {
 			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
 		}
 
-		boolean alignmentResponse = service.getAlignment(day, rightPlanet);
+		boolean alignmentResponse = service.getAlignment(day);
 		String response = "";
 		logger.debug("Aligment method response: {}", alignmentResponse);
 		if(alignmentResponse) {
-			response = "Para los habitantes del planeta "+planet+" en el dia "+day+" los planetas estan alineados";
+			response = "En el dia "+day+" los planetas estan alineados";
 		} else {
-			response = "Para los habitantes del planeta "+planet+" en el dia "+day+" los planetas no estan alineados";
+			response = "En el dia "+day+" los planetas no estan alineados";
 		}
 		return new ResponseEntity<>(new CustomMessageHandler(response), HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/{planeta}/informe/", produces = "application/json")
-	public ResponseEntity<?> getReport(@PathVariable("planeta") String planet) {
-		String rightPlanet= validatePlanet(planet);
-		if(rightPlanet == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(INVALID_PLANET), HttpStatus.CONFLICT);
-		}
-		HashMap<String, String> report = service.getReport(rightPlanet);
+	@GetMapping(value="/informe", produces = "application/json")
+	public ResponseEntity<?> getReport() {
+		HashMap<String, String> report = service.getReport();
 		return new ResponseEntity<>(report,HttpStatus.OK);
 	}
 	

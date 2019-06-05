@@ -40,51 +40,51 @@ public class AligmentTest extends Alignment{
 	
 	@Test
 	public void areAlignedTest() {
-		boolean actual = areAligned(ferengiMock.getCoordinates(0, 1), betasoideMock.getCoordinates(0, 1), vulcanoMock.getCoordinates(0, 1));
+		boolean actual = areAligned(ferengiMock.getCoordinates(0), betasoideMock.getCoordinates(0), vulcanoMock.getCoordinates(0));
 		assertTrue(actual);
-		boolean actualFalse = areAligned(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 1));
+		boolean actualFalse = areAligned(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72));
 		assertFalse(actualFalse);
 	}
 	
 	@Test
 	public void areAlignedWithSunTest() {
-		boolean actual = areAlignedWithSun(ferengiMock.getCoordinates(0, 1), betasoideMock.getCoordinates(0, 1));
+		boolean actual = areAlignedWithSun(ferengiMock.getCoordinates(0), betasoideMock.getCoordinates(0), vulcanoMock.getCoordinates(0));
 		assertTrue(actual);
-		actual = areAlignedWithSun(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(0, 1));
+		actual = areAlignedWithSun(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(0), vulcanoMock.getCoordinates(0));
 		assertFalse(actual);
 	}
 	
 	private void setupFerengi() {
-		when(ferengiMock.getCoordinates(72, 1))
+		when(ferengiMock.getCoordinates(72))
 		.thenReturn(new Coordinates(154.5085, -475.5282));
-		when(ferengiMock.getCoordinates(73, 1))
+		when(ferengiMock.getCoordinates(73))
 		.thenReturn(new Coordinates(-0.5085, 475.5282));
-		when(ferengiMock.getCoordinates(0, 1))
+		when(ferengiMock.getCoordinates(0))
 		.thenReturn(new Coordinates(500, 0));
 	}
 	
 	private void setupBetasoide() {
-		when(betasoideMock.getCoordinates(72, 1))
+		when(betasoideMock.getCoordinates(72))
 		.thenReturn(new Coordinates(-1618.0340, 1175.5705));
-		when(betasoideMock.getCoordinates(72, 3))
+		when(betasoideMock.getCoordinates(72))
 		.thenReturn(new Coordinates(1500.0340, 1176.5705));
-		when(betasoideMock.getCoordinates(0, 1))
+		when(betasoideMock.getCoordinates(0))
 		.thenReturn(new Coordinates(1000, 0));
 	}
 	
 	private void setupVulcano() {
-		when(vulcanoMock.getCoordinates(72, 1))
+		when(vulcanoMock.getCoordinates(72))
 		.thenReturn(new Coordinates(1000, -2.4493));
-		when(vulcanoMock.getCoordinates(72, 5))
+		when(vulcanoMock.getCoordinates(72))
 		.thenReturn(new Coordinates(-1000, -2.4493));
-		when(vulcanoMock.getCoordinates(0, 1))
+		when(vulcanoMock.getCoordinates(0))
 		.thenReturn(new Coordinates(2000, 0));
 	}
 	
 	private void setupSunStar() {
-		when(sunStarMock.getCoordinates(72, 1))
+		when(sunStarMock.getCoordinates(72))
 		.thenReturn(new Coordinates(0, 0));
-		when(sunStarMock.getCoordinates(73, 0))
+		when(sunStarMock.getCoordinates(73))
 		.thenReturn(new Coordinates(-0.1, -0.1));
 	}
 	

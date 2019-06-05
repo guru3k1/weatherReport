@@ -8,17 +8,17 @@ public class Planet {
 	private int radius;
 	private int angularSpeed;
 	private int direction;
-	
-	public Coordinates getCoordinates(@Min(0) int day, int planet) {
-		return new Coordinates(getX(day, planet),getY(day, planet));
+	private int precision = 1440;
+	public Coordinates getCoordinates(@Min(0) int day) {
+		return new Coordinates(getX(day),getY(day));
 	}
 	
-	public double getY (int day, int planet) {
-		return BigDecimal.valueOf(this.radius * Math.sin(Math.toRadians(this.angularSpeed*(Double.valueOf(day)/planet)*direction))).doubleValue();
+	public double getY (int day) {
+		return BigDecimal.valueOf(this.radius * Math.sin(Math.toRadians(this.angularSpeed*(Double.valueOf(day)/precision)*direction))).doubleValue();
 	}
 	
-	public double getX (int day,int planet) {
-		return BigDecimal.valueOf(this.radius * Math.cos(Math.toRadians(this.angularSpeed*(Double.valueOf(day)/planet)*direction))).doubleValue();
+	public double getX (int day) {
+		return BigDecimal.valueOf(this.radius * Math.cos(Math.toRadians(this.angularSpeed*(Double.valueOf(day)/precision)*direction))).doubleValue();
 	}
 	
 	public Planet(int radius, int angularSpeed, int direction) {

@@ -1,35 +1,42 @@
-package com.cga.weather_report.entity;
+package com.cga.weather_report.model;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "FERENGIS")
-public class Ferengi {
+@Table(name = "Clima")
+@Embeddable
+public class Clima {
 
 	@Id
-    @GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DIA", nullable = false)
-	private int dia;
+	private Long dia;
 	
     @Column(name = "CLIMA", length = 100, nullable = false)
 	private String clima;
 
-    
-    
-	public Ferengi(String clima) {
+   
+
+	public Clima() {
+		super();
+	}
+
+	public Clima(String clima) {
 		super();
 		this.clima = clima;
 	}
 
-	public int getDia() {
+	public Long getDia() {
 		return dia;
 	}
 
-	public void setDia(int dia) {
+	public void setDia(Long dia) {
 		this.dia = dia;
 	}
 
@@ -40,6 +47,5 @@ public class Ferengi {
 	public void setClima(String clima) {
 		this.clima = clima;
 	}
-
 	
 }

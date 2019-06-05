@@ -2,18 +2,17 @@ package com.cga.weather_report.service;
 
 import java.util.HashMap;
 
+import com.cga.weather_report.model.Clima;
 import com.cga.weather_report.model.Coordinates;
 
 public interface Service {
-	String calculateWeatherByDayAndPlanet(int day, String planet);
+	String calculateWeatherByDay(int day);
 	
-	String getWeatherReportByDay(int day, String planet);
+	Clima getWeatherReportByDay(Long day);
 	
-	HashMap<String,Coordinates> getCoordenates(int day, String planet);
+	HashMap<String,Coordinates> getCoordenates(Long day);
 	
-	boolean getAlignment(int day, String planet);
-	
-	int validatePlanet(String planet);
-	
-	HashMap<String, String> getReport(String planet);
+	boolean getAlignment(Long day);
+
+	HashMap<String, String> getReport();
 }

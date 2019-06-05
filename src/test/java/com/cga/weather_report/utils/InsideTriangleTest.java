@@ -51,7 +51,7 @@ public class InsideTriangleTest extends InsideTriangle{
 	
 	@Test
 	public void findOrientationOfTriangle() {
-		double actual = findOrientation(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 1));
+		double actual = findOrientation(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72));
 		double expected = -2234542.3726143;
 		assertEquals(expected, actual, .01);
 	}
@@ -59,45 +59,45 @@ public class InsideTriangleTest extends InsideTriangle{
 	
 	@Test
 	public void isRainingInFerengiTest() {
-		boolean rainingOk = itsRaining(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 1), sunStarMock.getCoordinates(72,1));
+		boolean rainingOk = itsRaining(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72), sunStarMock.getCoordinates(72));
 		assertTrue(rainingOk);
-		boolean rainingBetasoide = itsRaining(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(72, 3), vulcanoMock.getCoordinates(72, 1), sunStarMock.getCoordinates(72,1));
+		boolean rainingBetasoide = itsRaining(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72), sunStarMock.getCoordinates(72));
 		assertFalse(rainingBetasoide);
-		boolean rainingVulcano = itsRaining(ferengiMock.getCoordinates(72, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 5), sunStarMock.getCoordinates(72,1));
+		boolean rainingVulcano = itsRaining(ferengiMock.getCoordinates(72), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72), sunStarMock.getCoordinates(72));
 		assertFalse(rainingVulcano);
-		boolean rainingSun = itsRaining(ferengiMock.getCoordinates(73, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 1), sunStarMock.getCoordinates(73,0));
+		boolean rainingSun = itsRaining(ferengiMock.getCoordinates(73), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72), sunStarMock.getCoordinates(73));
 		assertFalse(rainingSun);
-		boolean rainingFerengi = itsRaining(ferengiMock.getCoordinates(0, 1), betasoideMock.getCoordinates(72, 1), vulcanoMock.getCoordinates(72, 1), sunStarMock.getCoordinates(73,0));
+		boolean rainingFerengi = itsRaining(ferengiMock.getCoordinates(0), betasoideMock.getCoordinates(72), vulcanoMock.getCoordinates(72), sunStarMock.getCoordinates(73));
 		assertFalse(rainingFerengi);
 	}
 	
 	private void setupFerengi() {
-		when(ferengiMock.getCoordinates(72, 1))
+		when(ferengiMock.getCoordinates(72))
 		.thenReturn(new Coordinates(154.5085, -475.5282));
-		when(ferengiMock.getCoordinates(73, 1))
+		when(ferengiMock.getCoordinates(73))
 		.thenReturn(new Coordinates(-0.5085, 475.5282));
-		when(ferengiMock.getCoordinates(0, 1))
+		when(ferengiMock.getCoordinates(0))
 		.thenReturn(new Coordinates(500, 0));
 	}
 	
 	private void setupBetasoide() {
-		when(betasoideMock.getCoordinates(72, 1))
+		when(betasoideMock.getCoordinates(72))
 		.thenReturn(new Coordinates(-1618.0340, 1175.5705));
-		when(betasoideMock.getCoordinates(72, 3))
+		when(betasoideMock.getCoordinates(72))
 		.thenReturn(new Coordinates(1500.0340, 1176.5705));
 	}
 	
 	private void setupVulcano() {
-		when(vulcanoMock.getCoordinates(72, 1))
+		when(vulcanoMock.getCoordinates(72))
 		.thenReturn(new Coordinates(1000, -2.4493));
-		when(vulcanoMock.getCoordinates(72, 5))
+		when(vulcanoMock.getCoordinates(72))
 		.thenReturn(new Coordinates(-1000, -2.4493));
 	}
 	
 	private void setupSunStar() {
-		when(sunStarMock.getCoordinates(72, 1))
+		when(sunStarMock.getCoordinates(72))
 		.thenReturn(new Coordinates(0, 0));
-		when(sunStarMock.getCoordinates(73, 0))
+		when(sunStarMock.getCoordinates(73))
 		.thenReturn(new Coordinates(-0.1, -0.1));
 	}
 	

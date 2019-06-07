@@ -1,7 +1,12 @@
 package com.cga.weather_report.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +42,7 @@ public class ServiceImp implements Service {
 	private static final String BETASOIDE_PLANET = "Betasoide";
 	private static final String VULCANO_PLANET = "Vulcano";
 	private static final String SUN_STAR = "Sol";
+	private static int precision = 1440;
 	private static final Logger logger = LoggerFactory.getLogger(ServiceImp.class);
 
 	Planet ferengi = new Planet(500, 1, CLOCKWISE);
@@ -86,8 +92,55 @@ public class ServiceImp implements Service {
 
 	@Override
 	public HashMap<String, String> getReport() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, String> clima = new LinkedHashMap<>();
+		clima.put("Tipo de Clima ", "Cantidad de Dias");
+		clima.put(DROUGHT, String.valueOf(dao.getDaysByWeather(DROUGHT)));
+		clima.put(RAINY, String.valueOf(dao.getDaysByWeather(RAINY)));
+		clima.put(OPTIMAL_CONDITIONS_OF_PRESSURE_AND_TEMPERATURE, String.valueOf(dao.getDaysByWeather(OPTIMAL_CONDITIONS_OF_PRESSURE_AND_TEMPERATURE)));
+		clima.put(NORMAL, String.valueOf(dao.getDaysByWeather(NORMAL)));
+		return clima;
+	}
+	
+	
+	public String accurateWeatherCalc (int day) {
+		List<String> dayWeather = new ArrayList<>();
+		String weather= "";
+		int optimalConditions = 0;
+		int drought = 0;
+		int rainy = 0;
+		int normal = 0;
+		for (int i = day*1440; i < (day+1)*precision; i++) {
+			dayWeather.add(calculateWeatherByDay(i));
+		}
+	Map<String, Long> times = dayWeather.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		for (Map.Entry<String, Long> entry : times.entrySet()) {
+			switch(entry.getKey()) {
+			case NORMAL:
+				normal = entry.getValue().intValue();
+				break;
+			case DROUGHT:
+				 drought = entry.getValue().intValue();
+				break;
+			case RAINY:
+				rainy = entry.getValue().intValue();
+				break;
+			case OPTIMAL_CONDITIONS_OF_PRESSURE_AND_TEMPERATURE:
+				optimalConditions = entry.getValue().intValue();
+				break;
+			default:
+				break;
+			}
+		}
+		if(drought>0) {
+			weather=DROUGHT;
+		}else if(optimalConditions >0){
+			weather=OPTIMAL_CONDITIONS_OF_PRESSURE_AND_TEMPERATURE;
+		}else if(rainy > normal) {
+			weather=RAINY;
+		}else {
+			weather=NORMAL;
+		}
+		return weather;
 	}
 	
 }

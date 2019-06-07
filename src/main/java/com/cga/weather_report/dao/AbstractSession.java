@@ -10,5 +10,5 @@ public abstract class AbstractSession {
 
 	protected Session getSession(){
 		return sessionFactory.getCurrentSession();
-}
+	}
 }

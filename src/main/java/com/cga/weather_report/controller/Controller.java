@@ -1,10 +1,7 @@
 package com.cga.weather_report.controller;
 
 import java.util.HashMap;
-import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,101 +20,66 @@ import com.cga.weather_report.utils.CustomMessageHandler;
 
 @RestController
 public class Controller {
-	private static final String FERENGI = "Ferengi";
-	private static final String BETASOIDE = "Betasoide";
-	private static final String VULCANO = "Vulcano";
+
 	private static final String DAY_REQUIRED = "El dia es requerido";
 	private static final String HIGHER_THAN_ZERO = "El dia debe ser 0 o superior";
-	private static final Logger logger = LoggerFactory.getLogger(Controller.class);
-	
-	
+	private static final int DAY_DB_DIFERENCE = 1;
+
 	@Autowired
 	private Service service;
-	
+
 	@ExceptionHandler(NumberFormatException.class)
 	public ResponseEntity<CustomErrorHandler> badRequest() {
-		return new ResponseEntity<>(new CustomErrorHandler("El valor de dia ingresado no es valido."), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new CustomErrorHandler("El valor de dia ingresado no es valido."),
+				HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ResponseEntity<CustomErrorHandler> handleMissingParams() {
-		return new ResponseEntity<>(new CustomErrorHandler("La clave y el valor de dia no fue ingresado. Ingreselo de esta manera clima?dia=0"), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(
+				new CustomErrorHandler(
+						"La clave y el valor de dia no fue ingresado. Ingreselo de esta manera clima?dia=0"),
+				HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping(value = "/", produces = "application/json")
 	public String homeMesagge() {
 		return "Bienvenido al reporte climatico de la galaxia. El sistema esta Activo";
 	}
 
-
 	@GetMapping(value = "/clima", produces = "application/json")
-	public ResponseEntity<?> getWeatherByDay(@RequestParam(value="dia", required=true) Long day) {
-		
-		if(day == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
-		}
-		if(day < 0 ) {
-			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
-		}
-		
-		Clima weather = service.getWeatherReportByDay(day);
-		if(weather == null) {
-			return new ResponseEntity<>(new CustomErrorHandler("NULL"), HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(new CustomMessageHandler(weather.getClima()), HttpStatus.OK);
-	}
-	
-	@GetMapping(value="/coordenadas", produces = "application/json")
-	public ResponseEntity<?> getCoordenates(@RequestParam(value="dia", required=true) Long day) {
+	public ResponseEntity<?> getWeatherByDay(@RequestParam(value = "dia", required = true) Long day) {
 
-		
-		if(day == null) {
+		if (day == null) {
 			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
 		}
-		if(day < 0 ) {
+		if (day < 0) {
 			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
 		}
-		HashMap<String,Coordinates> planets = service.getCoordenates(day);
+
+		Clima weather = service.getWeatherReportByDay(day + DAY_DB_DIFERENCE);
+		if (weather == null) {
+			return new ResponseEntity<>(new CustomErrorHandler("Clima no encontrado"), HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(new CustomMessageHandler(weather.getClimaName()), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/coordenadas", produces = "application/json")
+	public ResponseEntity<?> getCoordenates(@RequestParam(value = "dia", required = true) Long day) {
+
+		if (day == null) {
+			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
+		}
+		if (day < 0) {
+			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
+		}
+		HashMap<String, Coordinates> planets = service.getCoordenates(day);
 		return new ResponseEntity<>(planets, HttpStatus.OK);
 	}
-	
-	@GetMapping(value="/alineacion", produces = "application/json")
-	public ResponseEntity<?> getAlignment(@RequestParam(value="dia", required=true) Long day) {
-		logger.debug("Inside controller getAlignment method");
-		
-		if(day == null) {
-			return new ResponseEntity<>(new CustomErrorHandler(DAY_REQUIRED), HttpStatus.CONFLICT);
-		}
-		if(day < 0 ) {
-			return new ResponseEntity<>(new CustomErrorHandler(HIGHER_THAN_ZERO), HttpStatus.NOT_FOUND);
-		}
 
-		boolean alignmentResponse = service.getAlignment(day);
-		String response = "";
-		logger.debug("Aligment method response: {}", alignmentResponse);
-		if(alignmentResponse) {
-			response = "En el dia "+day+" los planetas estan alineados";
-		} else {
-			response = "En el dia "+day+" los planetas no estan alineados";
-		}
-		return new ResponseEntity<>(new CustomMessageHandler(response), HttpStatus.OK);
-	}
-	
-	@GetMapping(value="/informe", produces = "application/json")
+	@GetMapping(value = "/informe", produces = "application/json")
 	public ResponseEntity<?> getReport() {
 		HashMap<String, String> report = service.getReport();
-		return new ResponseEntity<>(report,HttpStatus.OK);
-	}
-	
-	public String validatePlanet(String planet) {
-		switch(planet) {
-		case FERENGI:
-		case BETASOIDE:
-		case VULCANO:
-			return planet;
-		default:
-			planet = null;
-	}
-		return planet;
+		return new ResponseEntity<>(report, HttpStatus.OK);
 	}
 }

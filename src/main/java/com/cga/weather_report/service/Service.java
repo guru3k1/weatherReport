@@ -15,4 +15,6 @@ public interface Service {
 	boolean getAlignment(Long day);
 
 	HashMap<String, String> getReport();
+	
+	String accurateWeatherCalc (int day);
 }

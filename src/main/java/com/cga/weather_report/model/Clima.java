@@ -19,17 +19,15 @@ public class Clima {
 	private Long dia;
 	
     @Column(name = "CLIMA", length = 100, nullable = false)
-	private String clima;
+	private String climaName;
 
-   
+	public Clima(String climaName) {
+		super();
+		this.climaName = climaName;
+	}
 
 	public Clima() {
 		super();
-	}
-
-	public Clima(String clima) {
-		super();
-		this.clima = clima;
 	}
 
 	public Long getDia() {
@@ -40,12 +38,14 @@ public class Clima {
 		this.dia = dia;
 	}
 
-	public String getClima() {
-		return clima;
+	public String getClimaName() {
+		return climaName;
 	}
 
-	public void setClima(String clima) {
-		this.clima = clima;
+	public void setClimaName(String climaName) {
+		this.climaName = climaName;
 	}
 	
+	
+
 }

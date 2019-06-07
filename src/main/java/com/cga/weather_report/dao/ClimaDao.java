@@ -7,4 +7,8 @@ public interface ClimaDao {
 	Clima getClimaByDia(Long dia);
 	
 	void saveClima(Clima clima);
+	
+	int getDaysCount();
+	
+	int getDaysByWeather(String weather);
 }

@@ -17,10 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 
 import com.cga.weather_report.model.Clima;
 import com.cga.weather_report.model.Coordinates;
@@ -58,7 +56,7 @@ public class ControllerTest {
 	
 	@Test
 	public void wrongValueTest () throws Exception {
-		String uri = "clima?dia=a";
+		String uri = "/clima?dia=a";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isBadRequest())
@@ -67,7 +65,7 @@ public class ControllerTest {
 	
 	@Test
 	public void badKeyTest () throws Exception {
-		String uri = "clima?d";
+		String uri = "/clima?d";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isBadRequest())
@@ -76,19 +74,13 @@ public class ControllerTest {
 	
 	@Test
 	public void nullDayTest () throws Exception {
-		String uri = "clima?dia=";
+		String uri = "/clima?dia=";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isConflict())
 			      .andExpect(content().json("{'errorMessage':'El dia es requerido'}"));
 		
-		uri = "coordenadas?dia=";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isConflict())
-			      .andExpect(content().json("{'errorMessage':'El dia es requerido'}"));
-		
-		uri = "alineacion?dia=";
+		uri = "/coordenadas?dia=";
 		mvc.perform(get(uri)
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isConflict())
@@ -97,19 +89,13 @@ public class ControllerTest {
 	
 	@Test
 	public void lowerThanZeroDayTest () throws Exception {
-		String uri = "clima?dia=-1";
+		String uri = "/clima?dia=-1";
 		mvc.perform(get(uri)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
 		.andExpect(content().json("{'errorMessage':'El dia debe ser 0 o superior'}"));
 		
-		uri = "coordenadas?dia=-1";
-		mvc.perform(get(uri)
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isNotFound())
-		.andExpect(content().json("{'errorMessage':'El dia debe ser 0 o superior'}"));
-		
-		uri = "alineacion?dia=-1";
+		uri = "/coordenadas?dia=-1";
 		mvc.perform(get(uri)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
@@ -142,24 +128,6 @@ public class ControllerTest {
 			      		+ "'Ferengi':{'x':500,'y':0}}"));
 	}
 	
-	@Test
-	public void alignmentTrueTest () throws Exception {
-		String uri = "/alineacion?dia=0";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isOk())
-			      .andExpect(content().json("{'message':'Para los habitantes del planeta Ferengi en el dia 0 los planetas estan alineados'}"));
-	}
-	
-	@Test
-	public void alignmentFalseTest () throws Exception {
-		String uri = "/alineacion?dia=1";
-		mvc.perform(get(uri)
-			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isOk())
-			      .andExpect(content().json("{'message':'Para los habitantes del planeta Ferengi en el dia 1 los planetas no estan alineados'}"));
-	}
-	
 	
 	private void setupService() {
 		HashMap<String, Coordinates> coordinatesMap = new HashMap<>();
@@ -169,13 +137,9 @@ public class ControllerTest {
 		coordinatesMap.put("Sol", new Coordinates(0,0));
 		
 		when(serviceMock.getWeatherReportByDay(Long.valueOf(0)))
-		.thenReturn(new Optional<Clima>());
-		when(serviceMock.getCoordenates(Long.valueOf(0))
-		.thenReturn(coordinatesMap);
-		when(serviceMock.getAlignment(Long.valueOf(0)))
-		.thenReturn(true);
-		when(serviceMock.getAlignment(Long.valueOf(1)))
-		.thenReturn(false);
+		.thenReturn(new Clima("Drought period"));
+		when(serviceMock.getCoordenates(Long.valueOf(0)))
+		.thenReturn(coordinatesMap);		
 	}
 	
 	

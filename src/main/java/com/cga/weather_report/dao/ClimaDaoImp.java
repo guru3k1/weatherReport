@@ -11,7 +11,6 @@ public class ClimaDaoImp extends AbstractSession implements ClimaDao{
 
 	@Override
 	public Clima getClimaByDia(Long dia) {
-		getSession();
 		return getSession().get(Clima.class, dia);
 	}
 
@@ -20,6 +19,19 @@ public class ClimaDaoImp extends AbstractSession implements ClimaDao{
 		getSession().persist(clima);
 		
 	}
+
+	@Override
+	public int getDaysCount() {
+		return getSession().createQuery("from Clima").getResultList().size();
+	}
+
+	@Override
+	public int getDaysByWeather(String weather) {
+		return getSession().createSQLQuery("select * from Clima where clima = :weather")
+				.setParameter("weather", weather)
+				.list().size();
+	}
+
 
 	
 }

@@ -40,7 +40,7 @@ public class InitializeData implements ApplicationRunner{
 	public void addNewDayWeather() {
 		logger.info("Adding a new weather every day at day start");
 		int day = dao.getDaysCount();
-		dao.saveClima(new Clima(service.accurateWeatherCalc(day)));
+		dao.saveClima(new Clima(service.accurateWeatherCalc(day+1)));
 		logger.info("Weather added for the day {}",day);
 	}
 }

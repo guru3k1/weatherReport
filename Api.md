@@ -1,6 +1,8 @@
 # API
 [Volver](README.md)
-Por una falta de tiempo no se completo la documentacion de la API en Swagger
+
+Proximamente se agregará la documentación de la API en Swagger
+
 Las rutas disponibles son las siguientes:
 
 **Test URL** (Sirve solo para verificar que el servicio este activo y corriendo):

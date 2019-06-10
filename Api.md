@@ -1,21 +1,21 @@
 # API
 [Volver](README.md)
+Por una falta de tiempo no se completo la documentacion de la API en Swagger
+Las rutas disponibles son las siguientes:
 
-**EN PROCESO**
+**Test URL** (Sirve solo para verificar que el servicio este activo y corriendo):
 
+https://halogen-country-241820.appspot.com/
 
-Actual Test URL:
-https://20190530t002016-dot-halogen-country-241820.appspot.com/
+**Clima del dia 0** (cambiar el valor para obtener los valores de los dias siguientes):
 
-Weather of the day 0 (Change the number to get another days)
-https://20190530t002016-dot-halogen-country-241820.appspot.com/weather/day/0
+https://halogen-country-241820.appspot.com/clima?dia=0
 
-Coordenadas de los planetas
-https://20190530t002016-dot-halogen-country-241820.appspot.com/coordenadas/0
+**Coordenadas de los planetas dia 0** (cambiar el valor para obtener los valores de los dias siguientes):
 
-Alineacion de los planetas
-https://20190530t002016-dot-halogen-country-241820.appspot.com/alineacion/0
+https://halogen-country-241820.appspot.com/coordenadas?dia=0
 
-Informe de los ultimos 10 años 
-Proximamente
+**Informe de los proximos 10 años en adelante** 
+
+https://halogen-country-241820.appspot.com/informe
 

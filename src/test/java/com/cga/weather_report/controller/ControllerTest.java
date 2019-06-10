@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.when;
@@ -28,6 +29,7 @@ import com.cga.weather_report.service.Service;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class ControllerTest {
 
 	@Autowired
@@ -116,6 +118,18 @@ public class ControllerTest {
 	}
 	
 	@Test
+	public void invalidWeatherTest () throws Exception {
+		String uri = "/clima?dia=3601";
+		
+		
+		mvc.perform(get(uri)
+			      .contentType(MediaType.APPLICATION_JSON))
+			      .andExpect(status().isNotFound())
+			      .andExpect(content().json("{'errorMessage':'Clima no encontrado'}"));
+	}
+	
+	
+	@Test
 	public void validCoordenatesTest () throws Exception {
 		String uri = "/coordenadas?dia=0";
 		mvc.perform(get(uri)
@@ -136,8 +150,10 @@ public class ControllerTest {
 		coordinatesMap.put("Vulcano", new Coordinates(2000,0));
 		coordinatesMap.put("Sol", new Coordinates(0,0));
 		
-		when(serviceMock.getWeatherReportByDay(Long.valueOf(0)))
+		when(serviceMock.getWeatherReportByDay(Long.valueOf(0+1)))
 		.thenReturn(new Clima("Drought period"));
+		when(serviceMock.getWeatherReportByDay(Long.valueOf(3601+1)))
+		.thenReturn(null);
 		when(serviceMock.getCoordenates(Long.valueOf(0)))
 		.thenReturn(coordinatesMap);		
 	}

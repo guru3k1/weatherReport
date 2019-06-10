@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.Min;
 
+/**
+ * @author Cesar Amadori
+ *
+ */
 public class Planet {
 	private int radius;
 	private int angularSpeed;

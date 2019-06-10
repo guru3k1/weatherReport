@@ -11,10 +11,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.cga.weather_report.model.Coordinates;
 import com.cga.weather_report.model.Planet;
 
+@ActiveProfiles("test")
 public class InsideTriangleTest extends InsideTriangle{
 
 	@Mock

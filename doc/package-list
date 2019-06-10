@@ -1,0 +1,6 @@
+com.cga.weather_report
+com.cga.weather_report.controller
+com.cga.weather_report.dao
+com.cga.weather_report.model
+com.cga.weather_report.service
+com.cga.weather_report.utils

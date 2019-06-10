@@ -5,14 +5,16 @@ import java.util.HashMap;
 import com.cga.weather_report.model.Clima;
 import com.cga.weather_report.model.Coordinates;
 
+/**
+ * @author Cesar Amadori
+ *
+ */
 public interface Service {
-	String calculateWeatherByDay(int day);
+	String calculateWeatherByInstant(int instant);
 	
 	Clima getWeatherReportByDay(Long day);
 	
-	HashMap<String,Coordinates> getCoordenates(Long day);
-	
-	boolean getAlignment(Long day);
+	HashMap<String,Coordinates> getCoordenates(Long instant);
 
 	HashMap<String, String> getReport();
 	

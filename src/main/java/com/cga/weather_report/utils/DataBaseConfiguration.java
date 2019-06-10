@@ -16,10 +16,20 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * @author Cesar Amadori
+ *
+ */
 @Configuration
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @EnableTransactionManagement
 public class DataBaseConfiguration {
+	
+	/**
+	 * <p><i>Generates the session bean to connect to database</i></p>
+	 *
+	 * @return the session bean
+	 */
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -29,7 +39,12 @@ public class DataBaseConfiguration {
  
         return sessionFactory;
     }
- 
+    
+	/**
+	 * <p><i>Generates the data source bean with database configuration</i></p>
+	 *
+	 * @return the database configuration bean
+	 */
     @Bean
     public DataSource dataSource() {
     	DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -40,7 +55,12 @@ public class DataBaseConfiguration {
  
         return dataSource;
     }
- 
+    
+	/**
+	 * <p><i>Generates the hibernate bean for the session</i></p>
+	 *
+	 * @return the hibernate transaction bean
+	 */
     @Bean
     public PlatformTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager
@@ -48,7 +68,12 @@ public class DataBaseConfiguration {
         transactionManager.setSessionFactory(sessionFactory().getObject());
         return transactionManager;
     }
- 
+    
+	/**
+	 * <p><i>Defines the hibernate properties used in the session</i></p>
+	 *
+	 * @return the hibernate properties
+	 */
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty(

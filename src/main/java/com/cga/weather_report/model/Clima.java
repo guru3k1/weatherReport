@@ -8,6 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Cesar Amadori
+ *
+ */
 @Entity
 @Table(name = "Clima")
 @Embeddable

@@ -1,5 +1,9 @@
 package com.cga.weather_report.model;
 
+/**
+ * @author Cesar Amadori
+ *
+ */
 public class Coordinates {
 	private double x;
 	private double y;
